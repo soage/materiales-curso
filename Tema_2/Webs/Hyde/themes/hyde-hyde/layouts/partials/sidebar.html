@@ -3,7 +3,7 @@
   <div class="container {{ with .Site.Params.sidebarSticky }}sidebar-sticky{{ end }}">
     <div class="sidebar-about">
       <span class="site__title">
-        <a href="{{ "" | absLangURL }}">
+        <a href="{{ .Site.BaseURL }}">
         {{ with .Site.Params.logoimage }}
         {{ $strippedSlash := ($.Site.Params.logoimage | replaceRE "^(/)+(.*)" "$2") }}
         {{ $logoImage := (printf "%s%s" $.Site.BaseURL $strippedSlash) }}
@@ -27,17 +27,9 @@
           <img src="https://www.gravatar.com/avatar/{{md5 .}}?s=240&d=mp" class="img--circle img--headshot element--center" alt="gravatar">
         </div>
       {{ end }}
-
-
-      {{ with .Site.Params.info}} <p>{{.}}</p> {{end}}
-
-
       <p class="site__description">
         {{ with .Site.Params.description }} {{.}} {{end}}
       </p>
-
-
-
     </div>
     <div class="collapsible-menu">
       <input type="checkbox" id="menuToggle">
@@ -48,22 +40,5 @@
       </div>
     </div>
     {{ partial "sidebar/copyright.html" . }}
-
-
-      {{ if .IsTranslated }}
-        <div style = "padding: 7px; margin-top:10px; border: 1px solid white; text-align:center">
-        	{{ range .Translations }}
-        		<a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>
-        	{{ end}}
-         </div>
-      {{ end }}
-
-
-
   </div>
-
 </div>
-
-
-
-

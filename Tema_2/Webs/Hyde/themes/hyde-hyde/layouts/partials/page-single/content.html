@@ -2,7 +2,6 @@
 <article>
   <header>
     <h1>{{ .Title }}</h1>
-    {{with .Params.texto}}<p>{{.}}</p>{{else}}<p>No hay texto</p>{{ end }}
     {{ with .Params.subtitle }}
     <span class="post__subtitle">
       {{.}}

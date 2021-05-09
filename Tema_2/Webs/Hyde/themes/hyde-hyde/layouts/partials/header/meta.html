@@ -15,11 +15,3 @@
 {{ with .Site.Params.meta.keywords }}<meta name="keywords" content="{{.}}">{{ end }}
 {{ template "_internal/twitter_cards.html" . }}
 {{ template "_internal/opengraph.html" . }}
-
-
-
-{{ if .IsTranslated }}
-  	{{ range .AllTranslations }}
-<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
-	  {{ end }}
-{{ end }}
