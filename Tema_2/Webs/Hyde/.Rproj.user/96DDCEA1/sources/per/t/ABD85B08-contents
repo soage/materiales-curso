@@ -1,0 +1,17 @@
+---
+title: "Sample post"
+texto: "Subtitle"
+author: "José Carlos"
+date: 2020-12-01T21:13:14-05:00
+categories: ["R"]
+tags: ["R Markdown"]
+translationKey: "post-prueba"
+---
+
+# R Markdown
+
+```{r}
+curve(cos, -4, 4)
+```
+
+

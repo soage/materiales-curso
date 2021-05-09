@@ -1,0 +1,73 @@
+baseurl: /
+ignoreFiles: ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
+languageCode: es
+title: José Carlos
+theme: hyde-hyde
+params:
+  author: Author
+  authorimage: /img/avatar.PNG
+  copyright: htr3n
+  dateformat: Jan 2, 2006
+  highlightjs: yes
+  highlightjsstyle: github
+  license: CC BY-SA 4.0
+  licenseURL: https://creativecommons.org/licenses/by-sa/4.0
+  showBuiltWith: yes
+  since: 2019
+  info: "Esta es una información sobre mi"
+  social:
+    email: your-email@example.com
+    facebook: <username>
+    github: <username>
+    instagram: <username>
+    linkedin: <username>
+    microblog: <username>
+    stackoverflow: <username>
+    telegram: <username>
+    twitter: <username>
+    xing: <username>
+  title: Title
+menu:
+  main:
+    - identifier: articulos
+      name: Artículos
+      url: /articulos/
+      weight: 100
+    - identifier: portafolio
+      name: Portafolio
+      url: /portafolio/
+      weight: 200
+    - identifier: acerca
+      name: Acerca
+      url: /acerca/
+      weight: 300
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+defaultContentLanguage: es
+languages:
+  es:
+    contentDir: content/es
+    languageName: Español
+    weight: 1
+  en:
+    contentDir: content/en
+    languageName: English
+    weight: 2
+    menu:
+      main:
+        - identifier: posts
+          URL: /en/posts
+          name: Posts
+          weight: 100
+        - identifier: portafolio
+          name: Portafolio
+          url: /portafolio/
+          weight: 200
+        - identifier: acerca
+          name: Acerca
+          url: en/about/
+          weight: 300
+

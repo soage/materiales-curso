@@ -1,0 +1,25 @@
+{
+    "id": "D35FF822",
+    "path": "F:/Curso_BlogDown/Webs/Academic/config/_default/menus.en.toml",
+    "project_path": "config/_default/menus.en.toml",
+    "type": "toml",
+    "hash": "1823232034",
+    "contents": "",
+    "dirty": false,
+    "created": 1608828744418.0,
+    "source_on_save": false,
+    "relative_order": 40,
+    "properties": {
+        "cursorPosition": "26,23",
+        "scrollLine": "0",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1608828857,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1608828857970,
+    "read_only": false,
+    "read_only_alternatives": []
+}
