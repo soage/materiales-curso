@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Creación de páginas web estáticas con el paquete blogdown</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="José Carlos Soage" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x7048a7d2f7844988f6cb027690256a0","expires":1}</script>
+    <script src="libs/himalaya/himalaya.js"></script>
+    <script src="libs/js-cookie/js.cookie.js"></script>
+    <link href="libs/editable/editable.css" rel="stylesheet" />
+    <script src="libs/editable/editable.js"></script>
+    <script src="libs/mark.js/mark.min.js"></script>
+    <link href="libs/xaringanExtra-search/search.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-search/search.js"></script>
+    <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":true,"autoSearch":true}) })</script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <style>
+    .remark-slide-content h1 {
+        font-size: 2.25rem;
+    }
+    </style>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Creación de páginas web estáticas con el paquete blogdown
+### José Carlos Soage
+### 10 de mayo de 2021
+
+---
+
+
+
+
+
+
+
+
+class: inverse, hide-logo, center, middle
+
+# Contacto y otros enlaces
+
+&lt;a style="color:white;" href="mailto:jsoage@uvigo.es"&gt;&lt;i class="fa fa-paper-plane fa-fw"&gt;&lt;/i&gt;&amp;nbsp; jsoage@uvigo.es&lt;/a&gt;&lt;br&gt;
+&lt;a style="color:white;" href="https://r-coder.com/"&gt;&lt;i class="fa fa-link fa-fw"&gt;&lt;/i&gt;&amp;nbsp; r-coder.com&lt;/a&gt;&lt;br&gt;
+&lt;a style="color:white;" href="https://r-charts.com/"&gt;&lt;i class="fa fa-link fa-fw"&gt;&lt;/i&gt;&amp;nbsp; r-charts.com&lt;/a&gt;&lt;br&gt;
+&lt;a style="color:white;" href="http://twitter.com/RCoderWeb"&gt;&lt;i class="fa fa-twitter fa-fw"&gt;&lt;/i&gt;&amp;nbsp; @RCoderWeb&lt;/a&gt;&lt;br&gt;
+&lt;a style="color:white;" href="http://github.com/R-CoderDotCom"&gt;&lt;i class="fa fa-github fa-fw"&gt;&lt;/i&gt;&amp;nbsp; @R-CoderDotCom&lt;/a&gt;&lt;br&gt;
+
+---
+
+class: inverse, hide-logo, center, middle
+
+# Objetivo del curso
+
+En este curso aprenderemos a crear una &lt;strong style = "color: white; font-weight: 800"&gt;página web personal&lt;/strong&gt; a nuestro gusto y a publicarla en un servidor de manera gratuita.
+
+&lt;iframe src="https://giphy.com/embed/l2JdTkHW1KZPdvdS0" width="480" height="362" frameBorder="0" class="giphy-embed" allowFullScreen&gt;&lt;/iframe&gt;&lt;p&gt;&lt;a href="https://giphy.com/gifs/season-15-the-simpsons-15x5-l2JdTkHW1KZPdvdS0"&gt;via GIPHY&lt;/a&gt;&lt;/p&gt;
+
+---
+class: inverse, hide-logo, center, middle
+
+# ¿Cómo seguir este curso?
+
+## Mira y aprende
+
+![](images/color.png)
+http://hyperboleandahalf.blogspot.com
+
+---
+
+class: inverse, hide-logo, center, middle
+
+# ¿Cómo seguir este curso?
+
+## Sigue mis pasos y pregunta si tienes dudas
+
+![](images/interact.png)
+http://hyperboleandahalf.blogspot.com
+
+---
+
+# Índice de contenidos
+
+.margin-top[
+
+### 1. [Introducción a los generadores de páginas web estáticas](#cap1)
+### 2. [Creación de páginas web con blogdown](#cap2)
+### 3. [Introducción al desarrollo web](#cap3)
+### 4. [HUGO: aprendiendo a personalizar y crear plantillas](#cap4)
+### 5. [Publicación de la web](#cap5)
+]
+
+---
+name: cap1
+class: inverse, hide-logo, center, middle
+
+# 1. Introducción a los generadores de páginas webs estáticas
+
+
+---
+
+# ¿Qué es una página web estática? ¿Y dinámica?
+
+## Web estática
+Una página web estática es aquella en la que **los archivos que la conforman son fijos** (estáticos). Estos archivos, por lo general, serán archivos HTML, hojas de estilos (CSS, SASS, ...), imágenes, tipografías, ...
+
+
+## Web dinámica
+Una página dinámica es aquella en la que la que **los usuarios pueden crear nuevas páginas o contenido** (si se permite), tales como nuevas entradas o nuevos perfiles de usuarios. Este tipo de páginas dependen de una base de datos y necesitan de un _backend_ escrito en PHP u otro lenguaje _server-side_ para generar el contenido de manera dinámica.
+
+Ejemplos: Wordpress, Joomla.
+
+
+---
+# Webs estáticas **VS** dinámicas
+
+| Estáticas | Dinámicas |
+|---------|------|
+| ✅ Más rápidas |❌ Más lentas|
+| ✅ Más seguras / estables |❌ Son hackeables / inestables|
+| ✅ Se pueden publicar gratuitamente (GitHub Pages, Netlify, ...)|❌ Necesitan un servidor de pago |
+|❌ No hay sistema de usuarios ni de comentarios&lt;sup&gt;1&lt;/sup&gt; .footnote[&lt;sup&gt;1&lt;/sup&gt; Salvo que se utilice &lt;a href = "https://gohugo.io/content-management/comments/"&gt;Disqus&lt;/a&gt; u otro sistema similar para los comentarios]  | ✅ Se pueden crear usuarios y publicar comentarios |
+|❌ Es complicado (pero posible) implementar búsquedas | ✅️ Se pueden realizar búsquedas |
+
+ 
+&gt; No confundir páginas estáticas con páginas sin interactividad.
+
+---
+# Creando una página web estática
+
+Si queremos crear un página web estática podemos crearla desde cero o utilizar una plantilla HTML hecha por otro desarrollador y cambiar el contenido y/o las imágenes.
+
+
+Este proceso puede ser válido para crear una única página, pero si queremos escribir artículos o crear más contenido **tendremos varios problemas**:
+
++ Estaremos repitiendo código una y otra vez. 
++ Escribir todo el contenido en HTML no es amigable.
++ Si cometemos algún error al escribir en HTML será difícil encontrarlo.
++ Si cometemos un error sitemático tendremos que corregirlo en todos los archivos.
+
+&gt; En estas circunstancias **conviene utilizar un generador de páginas estáticas**.
+
+---
+# ¿Qué es y por qué utilizar un **generador de webs estáticas**? 
+
+Un generador permite **crear páginas basándose en plantillas** previamente desarrolladas **sin tener que tocar el código&lt;sup&gt;1&lt;/sup&gt;**.
+
+De esta forma, si queremos crear una nueva página, en lugar de crear todo el código, podremos escribir el contenido y se le aplicará la plantilla que queramos.
+
+Esto nos **ahorrará tiempo y evitará errores**, ya que el código de la plantilla estará solo en el archivo correspondiente.
+
+
+
+.footnote[
+[1] Salvo que queramos modificar la estructura de la plantilla.
+]
+
+
+---
+
+# ¿Qué es **HUGO**?
+
+HUGO es el **generador de webs estáticas** más rápido que existe. 
+
++ Está escrito en un lenguaje llamado GO (también conocido como Golang). 
++ Creado por Bjørn Erik Pedersen (@bep), Steve Francia (@spf13) y otros colaboradores.
++ Es [open-source](https://github.com/gohugoio/hugo), completamente gratuito.
++ Permite agregar variables, condicionales y funciones a archivos HTML.
++ Las variables que se pasan a los archivos HTML **vienen de archivos Markdown** (encabezado YAML + contenido) y `.yaml` o `.toml`.
+
+
+&lt;div style="text-align:center; margin-top:50px;"&gt;&lt;img src="images/hugo-logo.png" /&gt;&lt;/div&gt;
+
+
+---
+# HUGO utiliza **Markdown**, **YAML** y/o **TOML**
+
+En el caso de HUGO, tendremos por una parte plantillas HTML y por otra archivos Markdown, YAML y/o TOML:
+
++ **Markdown** es un lenguaje de marcado ligero creado por John Gruber que, a través de [Pandoc](https://pandoc.org/), puede convertirse a HTML, PDF, Word, ...
+
++ **YAML** (Yet Another Markup Language) es un formato de serialización de datos legible por humanos. El encabezado de un archivo Markdown es un encabezado YAML.
+
++ **TOML** (Tom's Obvious Minimal Language) es un formato de archivo de configuración que es fácil de leer debido a la semántica obvia que pretende ser "mínima".
+
+
+&gt; YAML y TOML son practicamente lo mismo. Cambia un poco el formato pero cumplen la misma función.
+
+
+---
+# HUGO utiliza **Markdown**, **YAML** y/o **TOML**
+
+Recordemos cómo es un archivo Markdown. Se compone de un **encabezado YAML** y del **contenido**:
+
+&lt;div style="text-align:center; margin-top:80px"&gt;&lt;img src="images/archivo-markdown.png" /&gt;&lt;/div&gt;
+
+
+---
+# Compilando un archivo **Markdown como HTML** 
+
+Cuando compilemos se generará un archivo HTML con las variables del encabezado YAML y el contenido del archivo:
+
+![](images/markdown-html.png)
+&gt; ¿Por qué no aprovechar la conversión de Markdown a HTML para crear páginas web más complejas?
+
+
+
+---
+
+# Compilando un archivo **Markdown como HTML** 
+
+.pull-left[
+**Archivo Markdown**
+ ]
+ 
+ .pull-right[
+**Resultado**
+ ]
+
+&lt;div style="text-align:center; margin-top:50px;"&gt;&lt;img src="images/rmd-to-html.png" /&gt;&lt;/div&gt;
+
+
+
+
+
+---
+
+# **Ejemplos** de páginas webs creadas con HUGO
+
+Veamos unos cuantos ejemplos de páginas webs hechas con el generador HUGO:
+
+&lt;div style = "text-align: center;"&gt;
+&lt;a href = "https://gohugo.io/showcase/"&gt;https://gohugo.io/showcase/&lt;/a&gt;
+&lt;/div&gt;
+
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/logos.png" /&gt;&lt;/div&gt;
+
+
+---
+class: center
+
+# blogdown
+
+--
+
+## Un paquete de R para crear páginas web usando &lt;br&gt; R Markdown y Hugo
+
+--
+
+![](images/blogdown-package.png)
+
+
+---
+class: center
+
+# blogdown no implica crear un blog
+
+https://yihui.name/en/2017/06/netlify-instead-of-github-pages/
+
+
+![](images/yihui-site.png)
+
+![](images/yihui-blog.png)
+
+
+---
+
+# Alternativas
+
+Existen múltiples **alternativas similares a HUGO**, tales como:
+
++ Jekyll
++ Gatsby
++ Ghost
+
+**Otro tipo de alternativas basadas en R Markdown** (librerías de R para otros usos):
+
++ [distill](https://rstudio.github.io/distill/): "formato de publicación web optimizado para comunicación técnica y científica".
++ [pkgdown](https://pkgdown.r-lib.org/): páginas web para paquetes de R.
++ [bookdown](https://bookdown.org/): para escribir libros HTML, PDF, ePub y Kindle.
++ [pagedown](https://github.com/rstudio/pagedown): permite paginar la salida HTML de un R Markdown para generar PDFs listos para imprimir.
+
+---
+
+# ¿Todavía no has instalado R ni RStudio?
+
+
++ Descargar R: &lt;a href = "https://cran.r-project.org/bin/"&gt;https://cran.r-project.org/bin/&lt;/a&gt;
++ Descargar RStudio: &lt;a href = "https://rstudio.com/products/rstudio/download/#download"&gt;https://rstudio.com/products/rstudio/download/&lt;/a&gt;
+
+
+&lt;div style="text-align:center; margin-top:100px; margin-bottom:100px"&gt;&lt;img width = 350px src="images/rstudio-logo.png" /&gt;&lt;/div&gt;
+
+¿Alguna duda? Consulta mi tutorial: &lt;a href = "https://r-coder.com/instalar-r/"&gt;https://r-coder.com/instalar-r/&lt;/a&gt;
+
+---
+
+# Instalar **blogdown**
+
+## Desde CRAN
+
+
+```r
+install.packages("blogdown")
+```
+
+--
+
+## Desde GitHub
+
+
+```r
+if (!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("rstudio/blogdown")
+```
+
+
+---
+
+# Instalamos **HUGO** vía blogdown
+
+**Instalar HUGO** es muy sencillo: 
+
+
+```r
+blogdown::install_hugo()
+
+# Equivalente:
+library(blogdown)
+install_hugo()
+```
+
+--
+
+También podemos comprobar cuál es la **versión actual y actualizar HUGO** de manera sencilla:
+
+
+```r
+blogdown::hugo_version() # Versión actual
+blogdown::update_hugo()  # Actualizar
+```
+
+
+---
+name: cap2
+class: inverse, hide-logo, center, middle
+
+# 2. Creación de páginas web con blogdown
+
+---
+
+# Selección de un **tema**
+
+Existen multitud de temas creados por otros usuarios. Los temas oficiales se pueden encontrar en el siguiente enlace:
+
+&lt;div style = "text-align: center;"&gt;
+&lt;a href = "https://themes.gohugo.io/"&gt;https://themes.gohugo.io/&lt;/a&gt;
+&lt;/div&gt;
+
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/temas.PNG" /&gt;&lt;/div&gt;
+
+
+---
+
+# Selección de un **tema**
+
+Los temas que se encuentran en la diapositiva anterior pasan una serie de requisitos para entrar en la lista. De todas formas, **si buscamos en GitHub podremos encontrar más temas**, pero quizás no todos estén completos o sean estables.
+
+Existen temas de:
+
+- Documentación
+- Páginas personales
+- Landing pages
+- CV
+- Cursos
+- ...
+
+**Cada tema tendrá sus propias funcionalidades**. Si te gusta un tema que no incorpora cierta funcionalidad que necesitas tendrás que buscar otro tema o implementarla tu mismo. Aprenderemos a modificar un tema en el [Tema 4](#cap4) de este curso.
+
+
+---
+
+class: inverse, hide-logo, middle, center
+
+# El tema Hyde
+
+---
+
+# Un primer ejemplo
+
+Vamos a crear una web estática muy sencilla basándonos en una plantilla llamada Hyde, que por defecto es como se muestra en la siguiente imagen:
+
+&lt;div style="text-align:center"&gt;&lt;img src="images/hyde.PNG" style = "height: 350px; width:auto" /&gt;&lt;/div&gt;
+
+---
+
+
+# Creamos un **nuevo proyecto** en RStudio
+
+Se recomienda utilizar el [RStudio IDE](https://www.rstudio.com/products/rstudio/), pero no es un requisito indispensable.
+
+- Crea un nuevo proyecto desde &lt;kbd&gt;File&lt;/kbd&gt; → &lt;kbd&gt;New Project&lt;/kbd&gt; → &lt;kbd&gt;New Directory&lt;/kbd&gt; → &lt;kbd&gt;Website using blogdown&lt;/kbd&gt;
+
+&lt;div style="text-align:center"&gt;&lt;img src="images/rstudio-project-templates.png" style = "height: 350px; width:auto" /&gt;&lt;/div&gt;
+
+---
+
+# Instala el tema [Hyde](https://themes.gohugo.io/hyde-hyde/)
+
+  
+&lt;div style="text-align:center; margin-top:-20px;"&gt;&lt;img src="images/install-hyde.png" /&gt;&lt;/div&gt;
+
+Ten en cuenta que si no has instalado HUGO se instalará automáticamente.
+
+---
+
+
+# Alternativa
+
+Creamos un proyecto desde &lt;kbd&gt;File&lt;/kbd&gt; → &lt;kbd&gt;New Project&lt;/kbd&gt; → &lt;kbd&gt;New Directory&lt;/kbd&gt; → &lt;kbd&gt;New Project&lt;/kbd&gt; e instalamos un tema:
+
+- Tema por defecto:
+
+
+```r
+blogdown::new_site() 
+```
+
+--
+
+- Otro tema: 
+
+
+```r
+blogdown::new_site(theme = "htr3n/hyde-hyde",
+                   theme_example = TRUE) # Con todos los ejemplos
+```
+
+En el argumento `theme` escribiremos el nombre de la cuenta de GitHub y del repositorio con la plantilla.
+
+---
+
+# Antes de continuar actualiza las herramientas de compilación del proyecto
+
+Ve a &lt;kbd&gt;Tools&lt;/kbd&gt; → &lt;kbd&gt;Project Options&lt;/kbd&gt; y desmarca las opciones. Esto es una recomendación del autor de `blogdown`: https://bookdown.org/yihui/blogdown/rstudio-ide.html#fig:project-options
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/rstudio-project-options.png" /&gt;&lt;/div&gt; 
+
+---
+
+# **Servir** el sitio web
+
+Dentro del proyecto se habrán creado los archivos correspondientes a la web. Para visualizarla puedes:
+
+- Ejecutar la función `serve_site` desde la consola.
+
+```r
+blogdown::serve_site()
+```
+
+--
+
+- Usar el Addin de RStudio.
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/addin-serve.PNG" width = 350px /&gt;&lt;/div&gt;
+
+**No ejecutes varias veces `blogdown::serve_site` a la vez**.
+
+---
+
+# **Parar** el servidor
+
+Cuando quieras parar el servidor puedes:
+
+- Ejecutar la función `stop_server` desde la consola.
+
+```r
+blogdown::stop_server()
+```
+
+- Cerrar el proyecto o reiniciar RStudio con `.rs.restartR`.
+
+```r
+.rs.restartR()
+```
+
+---
+
+# LiveReLoad
+
+
+La creación de páginas webs con **blogdown** soporta [LiveReLoad](https://bookdown.org/yihui/blogdown/livereload.html), es decir, los cambios que hagas en los archivos se actualizarán en vivo.
+
+1. Modifica un archivo y guárdalo.
+
+--
+
+2. Mientras los cambios se compilan la consola se bloqueará.
+
+
+
+
+Comentario: esta característica, aunque útil, puede ocasionar problemas si se comete algún error al modificar los archivos base de la plantilla. Es aconsejable ejecutar `blogdown::build_site(local = TRUE)` cada cierto tiempo.
+
+
+
+
+---
+
+# Abrir la web en el navegador
+
+Por defecto, al ejecutar `serve_site` nuestro sitio web se abrirá en el _Viewer pane_ de RStudio. Es recomendable abrirlo con un navegador, para ello puedes:
+
+- Pulsar el botón de abrir en nueva pestaña.
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/new-window-hyde.PNG" /&gt;&lt;/div&gt;
+
+- Abrir el navegador y (si has cerrado o parado el servidor  del proyecto anterior) escribir:
+
+```r
+localhost:4321
+```
+
+---
+# **Estructura** de la plantilla
+
+Podrás ver que se han creado una serie de carpetas junto con el proyecto. **Esta estructura puede variar ligeramente dependiendo del tema instalado**. Por ejemplo, hay proyectos que incluirán una carpeta llamada `data`.
+
+.pull-left[
+&lt;div style="text-align:center; margin-top:30px;"&gt;&lt;img src="images/estructura-carpetas-tema-hyde.PNG" /&gt;&lt;/div&gt;
+ ]
+
+.pull-right[
+
+```r
+.
+├── 📁 content
+├── 📁 layouts
+├── 📁 public
+├── 📁 R
+├── 📁 resources
+├── 📁 static
+├── 📁 themes
+├── config.yaml
+├── index.Rmd
+└── netlify.toml 
+```
+]
+
+
+---
+
+# Directorio y archivos principales
+
+Dentro de cada carpeta podemos encontrar otras carpetas con más carpetas o archivos. De momento vamos a centrarnos en las carpetas `content`, `static` y en el archivo `config.yaml`.
+
+
+```r
+.
+*├── 📁 content
+|   ├── 📁 portfolio
+|   ├── 📁 posts
+|   └── about.md
+├── 📁 layouts
+├── 📁 public
+├── 📁 R
+├── 📁 resources
+*├── 📁 static
+|   ├── 📁 img
+├── 📁 themes
+*└── config.yaml
+├── index.Rmd
+└── netlify.toml 
+```
+
+---
+
+# El archivo **config.yaml**: configuración global de la web
+
+Buscamos lo siguiente y lo editamos:
+
+.can-edit[
+
+```r
+languageCode: en
+title: Title
+```
+]
+
+Ahora podemos ir a &lt;kbd&gt;static&lt;/kbd&gt; → &lt;kbd&gt;img&lt;/kbd&gt; y pegamos una imagen.
+
+.can-edit[
+
+```r
+params:
+  author: Author
+  authorimage: /img/hugo.png
+```
+]
+
+Podemos ir modificando otros parámetros, como nuestras redes sociales o los textos ancla (enlaces) del menú.
+
+
+
+---
+
+# El archivo **config.yaml**: configuración global de la web
+
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/hyde-config.PNG" /&gt;&lt;/div&gt;
+
+
+
+---
+
+# La carpeta **content**: organización del contenido
+
+La carpeta **content** permite [organizar el contenido](https://gohugo.io/content-management/organization/) de nuestra página web. HUGO asume (por defecto) que la estructura de carpetas utilizada es la misma que quieres que tenga la web.
+
+
+```r
+.
+├── 📁 content
+*    ├── 📁 portfolio  &lt;── https://miweb.com/portfolio/
+*    ├── 📁 posts      &lt;── https://miweb.com/posts/
+*    └── about.md      &lt;── https://miweb.com/about/
+```
+
+
+`portfolio` y `posts` son carpetas porque tendremos varios archivos dentro de ellas. Sin embargo, solo tendremos un `about`, por lo que podemos incluir directamente el archivo (R)Markdown, o crear una carpeta llamada `about` y dentro de ella crear el archivo pero llamado `index.md`.
+
+---
+
+# La carpeta **content**: organización del contenido
+
+Dentro de cada carpeta podemos tener más carpetas o los archivos que componen el contenido, formando, por defecto, las URL de forma anidada.
+
+Si creamos un archivo llamado `_index.md` dentro de esta carpeta (lo haremos después) definirá el contenido o las variables de la página de la carpeta (por lo general una lista de artículos):
+
+
+```r
+.
+├── 📁 posts
+*    ├── creating-a-new-theme.md  &lt;── https://miweb.com/posts/creating-a-new-theme/
+*    └── goisforlovers.md         &lt;── https://miweb.com/posts/goisforlovers/
+     └── ...
+```
+
+
+---
+
+# La carpeta **content**: creando contenido
+
+Vamos a &lt;kbd&gt;content&lt;/kbd&gt; → &lt;kbd&gt;about.md&lt;/kbd&gt; y lo editamos.
+
+Si ya conoces R Markdown la sintaxis es la misma. De hecho, puedes borrar el archivo y sustituirlo por un R Markdown (.Rmd) del mismo nombre y ejecutar código R.
+
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/hyde-rmd.PNG" width = "600px" /&gt;&lt;/div&gt;
+
+
+
+---
+
+# La carpeta **content**: creando contenido
+
+
+Vamos a &lt;kbd&gt;content&lt;/kbd&gt; → &lt;kbd&gt;posts&lt;/kbd&gt;. Creamos un nuevo archivo R Markdown y lo guardamos.
+
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/post-hyde.PNG" width = "700px" /&gt;&lt;/div&gt;
+
+
+Lo mismo se aplica para los contenidos dentro de &lt;kbd&gt;content&lt;/kbd&gt; → &lt;kbd&gt;portfolio&lt;/kbd&gt;.
+
+---
+
+# La carpeta **content**: creando contenido
+
+Ahora creamos un archivo dentro de `posts` llamado `_index.md` y dentro de él ponemos:
+
+
+```html
+---
+title: Artículos
+---
+```
+
+Esto cambiará el título de la sección.
+
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/hyde-index.PNG" /&gt;&lt;/div&gt;
+
+---
+
+
+# **Traducción** de las URLs
+
+Si te fijas en la dirección URL los contenidos están dentro de `/post/`, el portafolio dentro de `/portfolio/` y la página de información en `/about/`. Estas URL se corresponden con el nombre de las carpetas y del archivo `about.md`. 
+
+Si las cambiamos cambiará la dirección URL, por lo que también tendremos que cambiar los enlaces del menú dentro de `config.yaml`.
+
+&gt; También hay que cambiar los nombres de otras carpetas para que todo siga igual (dependiendo del tema). [Ir a la sección](#carpeta-theme).
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/hyde-rename.PNG" width = "450px"/&gt;&lt;/div&gt;
+
+---
+
+# **Comprobando** que todo está correcto
+
+
+```html
+&gt; blogdown::check_site()
+― Running a series of automated checks for your blogdown website project...
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+○ A successful check looks like this.
+● [TODO] A check that needs your attention looks like this.
+| Let's check out your blogdown site!
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+― Checking config.yaml
+| Checking "baseURL" setting for Hugo...
+● [TODO] Set "baseURL" to "/" if you do not yet have a domain.
+| Checking "ignoreFiles" setting for Hugo...
+● [TODO] Set "ignoreFiles" to ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
+| Checking setting for Hugo's Markdown renderer...
+| You are using the Markdown renderer 'goldmark'.
+● [TODO] Allow goldmark to render raw HTML by adding this setting to config.yaml (see https://github.com/rstudio/blogdown/issues/447 for more info):
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+```
+
+---
+
+# **Comprobando** que todo está correcto
+
+
+```html
+&gt; blogdown::check_config()
+― Checking config.yaml
+| Checking "baseURL" setting for Hugo...
+● [TODO] Update "baseURL" to your actual URL when ready to publish.
+| Checking "ignoreFiles" setting for Hugo...
+○ "ignoreFiles" looks good - nothing to do here!
+| Checking setting for Hugo's Markdown renderer...
+○ All set! Found the "unsafe" setting for goldmark.
+― Check complete: config.yaml
+```
+
+
+---
+
+# **Montando** el sitio para la publicación
+
+La función `build_site` se utiliza para construir los archivos definitivos. Estos archivos aparecerán dentro de la carpeta **public**. El contenido de esta carpeta podremos subirlo a nuestro servidor ([Tema 5](#cap5)) para visualizar nuestra web. **Es recomendable borrar todas las carpetas dentro de `public` antes de construir la web**.
+
+
+```html
+&gt; blogdown::build_site(local = FALSE)
+Start building sites …
+
+                   | EN  
+-------------------+-----
+  Pages            | 56  
+  Paginator pages  |  0  
+  Non-page files   |  5  
+  Static files     | 24  
+  Processed images |  0  
+  Aliases          |  1  
+  Sitemaps         |  1  
+  Cleaned          |  0  
+
+Total in 8174 ms
+```
+---
+
+
+class: inverse, hide-logo, middle, center
+
+# El tema Academic
+
+
+---
+
+# ¿Qué es el **tema Academic**?
+
+El tema Academic forma parte de los temas de HUGO de la empresa [Wowchemy](https://wowchemy.com/) y permite crear una web con HUGO bastante personalizable y completa sin tener que tocar ni una sola línea de HTML.
+
+.pull-left[
+✅  Diseñada para investigadores &lt;br&gt;
+✅  No es necesario saber código &lt;br&gt;
+✅  Tiene un buscador incorporado &lt;br&gt;
+✅  Permite filtrar publicaciones&lt;br&gt;
+✅  Permite crear cursos &lt;br&gt;
+✅  Permite crear diapositivas &lt;br&gt;
+✅  Multilenguaje &lt;br&gt;
+✅  Modo noche
+]
+
+.pull-right[
+❌  Recientemente se ha convertido en un tema freemium &lt;br&gt;
+❌  La plantilla es muy compleja si se quiere editar en profundidad &lt;br&gt;
+❌ La enorme cantidad de opciones que trae puede ser abrumadora al principio
+]
+
+Documentación oficial: [https://wowchemy.com/docs/](https://wowchemy.com/docs/)
+
+---
+
+# Precaución
+
+El tema es muy completo pero a la vez internamente es muy complejo. Esto ha provocado que sea inestable. **En este curso utilizaremos una versión estable que he preparado**, pero si instalas la nueva versión encontrarás una estructura diferente. Además, Yihui Xie, creador de `blogdown`, recomienda no actualizar nunca el tema y comenta que en RStudio están trabajando para crear un tema estable similar a Academic.
+
+
+&lt;div style="text-align:center"&gt;&lt;img src="images/caution.PNG" style = "height: 280px; width:auto" /&gt;&lt;/div&gt;
+
+---
+
+# ¿Qué vamos a hacer?
+
+Vamos a crear una página web como la siguiente, con biografía, experiencia laboral, artículos, publicaciones científicas, cursos y contacto. En inglés y castellano.
+
+Todo ello lo haremos a partir de archivos `.md`, `.Rmd` y `.toml`.  
+
+&lt;div style="text-align:center"&gt;&lt;img src="images/preview.PNG" style = "height: 320px; width:auto" /&gt;&lt;/div&gt;
+
+---
+
+
+
+# Creamos un **nuevo proyecto** en RStudio
+
+Se recomienda utilizar el [RStudio IDE](https://www.rstudio.com/products/rstudio/), pero no es un requisito indispensable.
+
+- Crea un nuevo proyecto desde &lt;kbd&gt;File&lt;/kbd&gt; → &lt;kbd&gt;New Project&lt;/kbd&gt; → &lt;kbd&gt;New Directory&lt;/kbd&gt; → &lt;kbd&gt;Website using blogdown&lt;/kbd&gt;
+
+&lt;div style="text-align:center"&gt;&lt;img src="images/rstudio-project-templates.png" style = "height: 350px; width:auto" /&gt;&lt;/div&gt;
+
+---
+
+# Instala el tema **Academic**
+
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/install-academic.png" /&gt;&lt;/div&gt;
+
+Ten en cuenta que si no has instalado HUGO se instalará automáticamente.
+
+---
+
+
+# Alternativa
+
+Creamos un proyecto desde &lt;kbd&gt;File&lt;/kbd&gt; → &lt;kbd&gt;New Project&lt;/kbd&gt; → &lt;kbd&gt;New Directory&lt;/kbd&gt; → &lt;kbd&gt;New Project&lt;/kbd&gt; e instalamos el tema:
+
+
+- En este caso vamos a instalar el tema con el archivo `config.toml` en lugar de `config.yaml`:
+
+
+```r
+blogdown::new_site(theme = "soage/starter-academic",
+*                  format = "toml",
+                   theme_example = TRUE) # Con todos los ejemplos
+```
+
+En el argumento `theme` escribiremos el nombre de la cuenta de GitHub y del repositorio con la plantilla.
+
+---
+
+# Antes de continuar actualiza las herramientas de compilación del proyecto
+
+Ve a &lt;kbd&gt;Tools&lt;/kbd&gt; → &lt;kbd&gt;Project Options&lt;/kbd&gt; y desmarca las opciones.
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/rstudio-project-options.png" /&gt;&lt;/div&gt; 
+
+---
+
+# **Servir** el sitio web
+
+Como vimos antes, dentro del proyecto se habrán creado los archivos correspondientes a la web y para visualizarla puedes:
+
+- Ejecutar `serve_site` desde la consola:
+
+
+```r
+blogdown::serve_site()
+```
+
+--
+
+- Usar el Addin de RStudio:
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/addin-serve.PNG" width = "350px" /&gt;&lt;/div&gt;
+
+**No ejecutes varias veces `blogdown::serve_site` a la vez**.
+
+---
+
+# ¡Ya tenemos nuestra **plantilla lista**!
+
+Ahora podrás ver lo siguiente en el _Viewer Pane_ de RStudio
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/academic-theme-preview.PNG" width = "700px" /&gt;&lt;/div&gt;
+
+
+---
+
+# **Parar** el servidor
+
+Para parar el servidor:
+
+- Ejecuta lo siguiente desde la consola:
+
+
+```r
+blogdown::stop_server()
+```
+
+- Cierra el proyecto o reinicia RStudio con:
+
+
+```r
+.rs.restartR()
+```
+
+---
+
+# Abrir la web en el navegador
+
+Por defecto, al ejecutar `serve_site` nuestro sitio web se abrirá en el _Viewer Pane_ de RStudio. Es recomendable abrirla con un navegador, para ello puedes:
+
+- Pulsar el botón de abrir en nueva pestaña.
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/new-window.PNG" /&gt;&lt;/div&gt;
+
+- Abrir el navegador y escribir:
+
+```r
+localhost:4321
+```
+
+---
+# **Estructura** de la plantilla
+
+Junto al proyecto se han creado una serie de carpetas. **Como puedes ver, esta estructura es diferente a la del proyecto anterior**. 
+
+.pull-left[
+&lt;div style="text-align:center; margin-top:30px;"&gt;&lt;img src="images/estructura-carpetas-tema-academic.PNG" /&gt;&lt;/div&gt;
+ ]
+
+.pull-right[
+
+```r
+.
+├── 📁 assets
+├── 📁 config
+├── 📁 content
+├── 📁 layouts
+├── 📁 R
+├── 📁 resources
+├── 📁 static
+├── 📁 themes
+├── config.toml
+├── index.Rmd
+└── netlify.toml 
+```
+]
+
+El tema Academic es un tema especialmente complejo.
+
+---
+
+# Directorio y archivos principales
+
+
+```r
+.
+├── 📁 assets
+*├── 📁 config
+     ├── 📁 _default
+        ├── languages.toml
+        ├── menus.toml
+        ├── params.toml
+*├── 📁 content
+|   ├── 📁 authors
+|   ├── 📁 courses
+|   ├── 📁 home
+|   ├── 📁 post
+|   └── ...
+├── 📁 layouts
+├── 📁 R
+├── 📁 resources
+├── 📁 static
+├── 📁 themes
+*└── config.toml
+```
+
+---
+
+# El archivo **config.toml**: Antes de empezar
+
+Antes de nada vamos a hacer una comprobación del sitio ejecutando: `blogdown::check_site()`. Un aviso será el siguiente:
+
+
+```r
+● [TODO] Add these items to the "ignoreFiles" setting: "\\.knit\\.md$", "\\.utf8\\.md$"
+● [TODO] Remove "_files$" from "ignoreFiles"
+```
+
+Para solucionarlo abrimos el archivo `config.toml`:
+
+
+```r
+.
+├── 📁 assets
+├── 📁 config
+├── 📁 content
+├── 📁 resources
+├── 📁 static
+├── 📁 themes
+*└── config.toml
+```
+
+---
+
+# El archivo **config.toml**: Antes de empezar
+
+Buscamos lo siguiente dentro del archivo:
+
+
+```html
+ignoreFiles = ["\\.ipynb$", ".ipynb_checkpoints$", "\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+```
+
+Y lo sustituimos por:
+
+
+```html
+ignoreFiles = ["\\.ipynb$", ".ipynb_checkpoints$", "\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
+```
+
+La próxima vez que ejecutemos la comprobación ya no nos saldrá el aviso. **¡Ahora todo está listo para empezar a editar nuestro sitio web!**
+
+---
+
+# El archivo **config.toml**: Cambiar el nombre a la web y el copyright
+
+Buscamos lo siguiente y lo editamos:
+
+.can-edit[
+
+```r
+# Title of your site
+title = "Academic"
+```
+]
+
+.can-edit[
+
+```r
+# Enter a copyright notice to display in the site footer.
+# To display a copyright symbol, type `&amp;copy;`. For current year, type `{year}`.
+copyright = ""
+```
+]
+
+---
+
+# El archivo **languages.toml**: Cambiar el idioma
+
+Vamos a &lt;kbd&gt;config&lt;/kbd&gt; → &lt;kbd&gt;_default&lt;/kbd&gt; → &lt;kbd&gt;languages.toml&lt;/kbd&gt; y cambiamos `[en]` por `[es]` y `en-us` por `es-ES`.
+.can-edit[
+
+```r
+# Languages
+#   Create a `[X]` block for each language you want, where X is the language ID.
+#   Refer to https://sourcethemes.com/academic/docs/language/
+
+# Configure the English version of the site.
+[en]
+  languageCode = "en-us"
+```
+]
+
+Si quieres crear un sitio multilenguaje vamos a archivo `config.toml` y modificamos:
+
+.can-edit[
+
+```r
+# Default language to use (if you setup multilingual support)
+defaultContentLanguage = "en"
+```
+]
+
+Ahora veremos varios textos traducidos al español.
+
+---
+
+# El archivo **menus.toml**: Cambiar el menú
+
+El menú sigue apareciendo en inglés porque se configura desde el archivo **menus.toml**, que se encuentra en &lt;kbd&gt;config&lt;/kbd&gt; → &lt;kbd&gt;_default&lt;/kbd&gt; → &lt;kbd&gt;menus.toml&lt;/kbd&gt; y tiene la siguiente apariencia:
+
+
+```r
+[[main]]
+  name = "Demo"
+  url = "#hero"
+  weight = 10
+
+[[main]]
+  name = "Posts"
+  url = "#posts"
+  weight = 20
+
+...
+```
+
+`name` es el nombre que aparecerá en el menú, `url` el enlace o sección a la que lleva dentro de la misma página (#) y `weight` determinará el orden.
+
+---
+
+# El archivo **params.toml**: Cambiar otros ajustes
+
+Ve a &lt;kbd&gt;config&lt;/kbd&gt; → &lt;kbd&gt;_default&lt;/kbd&gt; → &lt;kbd&gt;params.toml&lt;/kbd&gt;. Este archivo permite cambiar varios ajustes como el tema, el tamaño de la fuente, el modo noche, entre otros ajustes.
+
+## Cambiando el tema por defecto
+
+
+```r
+theme = "minimal"
+```
+
+Temas disponibles: `"1950s"`, `"apogee"`, `"cofee"`, `"cyberpunk"`,  `"dark"`, `"forest"`, `"minimal"`, `"mr robot"`, `"ocean"`, `"rose"` y `"strawberry"`
+
+Ver: https://wowchemy.com/docs/customization/
+---
+
+# Crear un **nuevo tema**
+
+Ve a &lt;kbd&gt;themes&lt;/kbd&gt; → &lt;kbd&gt;github.com&lt;/kbd&gt; → &lt;kbd&gt;wowchemy&lt;/kbd&gt; → &lt;kbd&gt;wowchemy-hugo-modules&lt;/kbd&gt; → &lt;kbd&gt;wowchemy&lt;/kbd&gt; → &lt;kbd&gt;data&lt;/kbd&gt; → &lt;kbd&gt;themes&lt;/kbd&gt;, donde se encuentran los archivos `.toml` asociados a los temas por defecto.
+
+## Crea un nuevo archivo toml
+
+Copia y pega uno de los archivos que ya existen y cámbiale el nombre. Lo llamaremos `custom.toml`. 
+
+
+---
+# Crear un **nuevo tema**
+
+**custom.toml**
+
+
+```r
+# Theme metadata
+name = "custom"
+
+# Is theme light or dark?
+light = true
+
+# Primary
+primary = "#2962ff"
+
+# Menu
+menu_primary = "#073349"
+menu_text = "#fff"
+menu_text_active = "#f7f7f7"
+menu_title = "#fff"
+
+# Home sections
+home_section_odd = "rgb(255, 255, 255)"
+home_section_even = "rgb(247, 247, 247)"
+```
+
+---
+# Crear un **nuevo tema**
+
+Volvemos al archivo **params.toml** y escribimos el nombre del nuevo tema.
+
+
+```r
+theme = "custom"
+```
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/tema-propio-1.PNG" /&gt;&lt;/div&gt;
+
+---
+
+
+# El archivo **params.toml**: Cambiar otros ajustes
+
+## Modo noche, tipo y tamaño de fuente 
+
+
+```r
+# Enable users to switch between day and night mode?
+day_night = true
+
+# Override the theme's font set (optional).
+#   Latest font sets (may require updating): https://sourcethemes.com/academic/themes/
+#   Browse built-in font sets in `themes/academic/data/fonts/`
+#   Browse user installed font sets in `data/fonts/`
+font = ""
+
+# Choose a font size.
+# Sizes: XS (extra small), S (small), M (medium), L (large - DEFAULT), XL (extra large)
+font_size = "L"
+```
+
+Fuentes disponibles: `"Minimal"` (modern), `"Classic"`, `"Rose"` (traditional serif), `"Mr Robot"` (futuristic) y `"Native"`. Si se deja en blanco usa la fuente del tema. 
+
+---
+
+# El archivo **params.toml**: Cambiar otros ajustes
+
+## Características del sitio
+
+
+```r
+highlight = true
+highlight_languages = ["r", "latex"]  # Add support for highlighting additional languages
+# highlight_style = "github"  # For supported styles, see https://cdnjs.com/libraries/highlight.js/
+
+math = false
+
+diagram = false
+
+privacy_pack = false
+
+edit_page = {repo_url = "https://github.com/gcushen/hugo-academic", content_dir = "", repo_branch = "master", editable = {docs = true, page = false, post = false}}
+
+show_related = {docs = true, page = false, post = true, project = true, publication = true, talk = true}
+```
+
+Ejemplos `highlight`, `math` y `diagram`: https://academic-demo.netlify.app/post/writing-technical-content/
+
+---
+# La carpeta **assets**. Cambiando el favicon
+
+La carpeta `assets` contiene otra carpeta llamada `images`. En ella podemos guardar una imagen de tipo PNG llamada `icon.png` que reemplazará el favicon por defecto.
+
+
+Como ejemplo, podemos agregar el logo de la Universidad de Vigo:
+
+.pull-left[
+&lt;div style="text-align:center; margin-top:50px;"&gt;&lt;img src="images/favicon.PNG" /&gt;&lt;/div&gt;
+]
+
+.pull-right[
+&lt;div style="text-align:center; margin-top:50px;"&gt;&lt;img src="images/favicon-2.PNG" /&gt;&lt;/div&gt;
+]
+
+
+---
+
+
+# La carpeta **content**
+
+La carpeta content es la que contiene los archivos que permiten editar la estructura y el contenido, así como crear nuevos artículos, cursos, diapositivas, ...
+
+
+## content → home
+
+La carpeta &lt;kbd&gt;home&lt;/kbd&gt; dentro de &lt;kbd&gt;content&lt;/kbd&gt; nos permite cambiar la página de inicio. Podemos activar, desactivar y cambiar los contenidos, así como editar el orden de cada sección (widget).
+
+Vamos a desactivar las secciones de los archivos `hero.md`, `demo.md`, &lt;kbd&gt;gallery&lt;/kbd&gt; → `index.md`, `featured.md`&lt;sup&gt;1&lt;/sup&gt;, `talks.md`, `projects.md` y `tags.md`.
+
+
+.footnote[
+[1] Como desactivamos `featured.md` y `hero.md`, tenemos que volver a `menus.toml`. 
+]
+
+---
+# La carpeta **content**
+
+## content → home → about.md
+
+Ve a `about.md` dentro de home y cambia o borra el título (elemento `title`). Como ejemplo puedes poner `title: Sobre mi`
+
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/tema-propio.PNG" width = "600px"/&gt;&lt;/div&gt;
+
+
+---
+
+# La carpeta **content**
+
+## content → home
+
+Vamos a hacer unos pequeños cambios en varios archivos:
+
++ `about.md`
++ `experience.md`
++ `accomplishments.md`
++ `posts.md`
++ `publications.md`
++ `contact.md`
+
+
+---
+
+# La carpeta **content**
+
+## content → authors
+
+Dentro de la carpeta `authors` ve a `admin` y agrega una foto, por ejemplo yo he agregado una foto llamada `avatar-2.JPG`.
+
+También puedes crear una nueva carpeta que en vez de `admin` se llame como quieras (o crear carpetas para otros autores), pero recuerda que dentro de &lt;kbd&gt;content&lt;/kbd&gt; → &lt;kbd&gt;home&lt;/kbd&gt; → &lt;kbd&gt;about.md&lt;/kbd&gt; debes cambiar `author: admin` por el nuevo nombre.
+
+Dentro de la carpeta `authors` ve a `admin`, abre `_index.md` y escribe tu datos.
+
+
+Podemos agregar nuestro CV en &lt;kbd&gt;static&lt;/kbd&gt; → &lt;kbd&gt;media&lt;/kbd&gt;.
+
+---
+# La carpeta **content**
+
+## content → authors (personalización avanzada)
+
+También vamos a agregar un borde a la imagen que agregamos antes.
+
+Para ello tenemos que ir a &lt;kbd&gt;themes&lt;/kbd&gt; → &lt;kbd&gt;github.com&lt;/kbd&gt; → &lt;kbd&gt;wowchemy&lt;/kbd&gt; → &lt;kbd&gt;wowchemy-hugo-modules&lt;/kbd&gt; → &lt;kbd&gt;wowchemy&lt;/kbd&gt; → &lt;kbd&gt;assets&lt;/kbd&gt; → &lt;kbd&gt;scss&lt;/kbd&gt; → &lt;kbd&gt;wowchemy&lt;/kbd&gt; → &lt;kbd&gt;_widgets.css&lt;/kbd&gt; y agregamos `border: 2px solid black;` a la clase `.avatar`
+
+
+---
+
+# La carpeta **content**
+
+## content → authors
+
+&lt;div style="text-align:center; margin-top:-10px"&gt;&lt;img src="images/biografia.PNG" width = 670px/&gt;&lt;/div&gt;
+ 
+---
+
+# La carpeta **content**
+
+## content → authors
+
+Lo que escribamos en `bio` aparecerá como descripción cuando escribamos un artículo en la web.
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/bio.PNG" /&gt;&lt;/div&gt;
+
+---
+
+# La carpeta **content**
+
+## content → publications
+
+Dentro de `publications` tenemos 1 archivo y 3 carpetas.
+
++ Dentro de `_index.md` podemos cambiar `title: Publications` por `title: Publicaciones`.
+
++ Si queréis que al darle al menú la página nos lleve directamente a `/publications` podemos volver al archivo `menus.toml`.
+
+
+```r
+[[main]]
+  name = "Publicaciones"
+  url = "#publications" # Cambiaríamos "#publications" por "publications"
+  weight = 50
+```
+
+---
+
+# La carpeta **content**
+
+## content → publications
+
+Si dentro de `/publications` aparecen 4 publicaciones en lugar de 3 es por un bug en el tema. Vamos a &lt;kbd&gt;themes&lt;/kbd&gt; → &lt;kbd&gt;starter-academic&lt;/kbd&gt; → &lt;kbd&gt;content&lt;/kbd&gt; → &lt;kbd&gt;publication&lt;/kbd&gt; y borramos la carpeta `example`. Paramos el servidor, construimos el sitio y volvemos a ejecutar el servidor.
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/publicaciones.PNG" width = "500px" /&gt;&lt;/div&gt;
+
+
+---
+
+# La carpeta **content**
+
+## content → publications
+
+Vamos a crear un nuevo artículo de revista.
+
++ Creamos una nueva carpeta llamada `nuevo-articulo`.
++ Copiamos y pegamos los contenidos de `journal-article` dentro de la nueva carpeta.
++ Editamos el archivo. 
+
+**Consejo**: podemos guardar las carpetas de ejemplo en otro lugar y borrarlas. Así, si necesitamos crear un nuevo artículo tendremos las plantillas de ejemplo preparadas.
+
+---
+
+# La carpeta **content**
+
+## content → courses
+
++ Dentro de `_index.md` podemos cambiar `title: Courses` por `title: Cursos`.
++ Copiamos y pegamos la carpeta `example` y la llamamos `curso-1`.
++ Abrimos `_index.md` dentro de la carpeta `curso-1` y lo editamos.
++ Renombramos `example1` por `capitulo1` y `example2` por `capitulo1`.
++ Podemos crear **tantos cursos y capítulos dentro de cada curso como queramos**.
+
+---
+# La carpeta **content**
+
+Lo que hemos visto hasta ahora se aplica al resto de carpetas dentro de `content`.
+
+Puedes crear, cambiar o modificar lo que quieras con facilidad, manteniendo la estructura indicada en los comentarios de cada archivo Markdown.
+
+A continuación veremos cómo tener la página web que hemos creado en varios idiomas.
+
+---
+
+# Traducir los contenidos
+
+Para traducir los contenidos volvemos a `languages.toml` y ponemos lo siguiente:
+
+
+```r
+[es]
+  languageCode = "es-ES"
+  contentDir = "content/es"
+  
+[en]
+  languageCode = "en-US"
+  contentDir = "content/en"
+```
+
+
+---
+
+# Traducir los contenidos
+
++ Paramos el servidor con `blogdown::stop_server()`, creamos la carpeta `es` dentro de content y copiamos todos los archivos a ella.
++ Una vez creada la duplicamos y la llamamos `en`.
+
+
+```r
+📁── content
+   ├── 📁- es     &lt;- Español
+   └── 📁- en     &lt;- Inglés
+```
+
++ Volvemos a ejecutar el servidor con `blogdown::serve_site()`.
+
+
+---
+# Traducir los contenidos
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/traduccion.PNG" /&gt;&lt;/div&gt;
+
+---
+# Traducir los contenidos
+
+Ahora podemos traducir todos los contenidos dentro de la carpeta `en`.
+
+Para traducir el menú:
+
++ Copiamos el archivo `menus.toml` y lo renombramos como `menus.en.toml`. En este nuevo archivo podemos traducir los elementos del menú.
+
+ 
+&lt;div style="text-align:center; margin-top:120px;"&gt;&lt;img src="images/menus.png" /&gt;&lt;/div&gt;
+
+
+---
+# Ya tenemos nuestra página web lista
+
+Ahora, para **comprobar** que todo está correcto, ejecuta:
+
+
+```r
+blogdown::check_site()
+```
+
+Por último, **construye** los archivos con:
+
+
+```r
+blogdown::build_site()
+```
+
+Dentro de la carpeta `public` están todos los archivos generados [para publicar](#cap5) la página web.
+
+---
+name: cap3
+class: inverse, hide-logo, center, middle
+
+# 3. Introducción al desarrollo web
+
+---
+
+# Conceptos básicos de **HTML**
+
+HTML (HyperText Markup Language) es un lenguaje de marcado que se utiliza para crear la parte visual de las páginas web. Sus extensiones de archivo son `.html` y `.htm`
+
+El HTML define el _frontend_ (lo que vemos) de una página web, pero no puede realizar funciones por sí mismo. Es completamente estático.
+
+HTML **consiste en una serie de elementos creados con etiquetas**, que enmarcan ciertos contenidos. Como ejemplo, un párrafo se compone de:
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/elemento-html.PNG" /&gt;&lt;/div&gt;
+
+---
+
+# Conceptos básicos de **HTML**: etiquetas
+
+Las etiquetas más habituales son:
+
+.pull-left[
+| Etiqueta| Descripción|
+|:-------:|:-----------:|
+|  &amp;lt;html&gt; &amp;lt;/html&gt;    |  Definen el documento  |
+|  &amp;lt;head&gt; &amp;lt;head&gt;   |  Encabezado  |
+|  &amp;lt;meta /&gt;   |  Metaetiquetas  |
+|  &amp;lt;body&gt; &amp;lt;/body&gt;   |  Cuerpo de la página  |
+|  &amp;lt;header&gt; &amp;lt;/header&gt;   |  Cabezera  |
+|  &amp;lt;h1&gt; &amp;lt;/h1&gt;, &amp;lt;h2&gt; &amp;lt;/h2&gt; , ... &amp;lt;h6&gt; &amp;lt;/h6&gt;   |  Encabezados (Títulos) |
+] 
+
+.pull-right[
+| Etiqueta| Descripción|
+|:-------:|:-----------:|
+|  &amp;lt;p&gt; &amp;lt;/p&gt;   |  Párrafos  |
+|  &amp;lt;strong&gt; &amp;lt;/strong&gt;   |  Negrita  |
+|  &amp;lt;div&gt; &amp;lt;/div&gt;   |  División  |
+|  &amp;lt;a&gt; &amp;lt;/a&gt;   |  Enlaces  |
+|  &amp;lt;style&gt; &amp;lt;/style&gt;   |  Hojas de estilos  |
+|  &amp;lt;script&gt; &amp;lt;/script&gt;   |  Archivos JavaScript  |
+|  &amp;lt;footer&gt; &amp;lt;/footer&gt;   |  Pie de página  |
+] 
+
+---
+
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+Vamos a crear una carpeta y dentro de esa carpeta vamos a crear un bloc de notas (o similar) y lo guardamos como `web.htm`. Dentro vamos a pegar lo siguiente:
+
+
+```html
+&lt;!DOCTYPE html&gt;
+  
+&lt;html lang="es"&gt;
+  
+&lt;head&gt;
+&lt;/head&gt;
+  
+&lt;body&gt;
+&lt;/body&gt; 
+  
+&lt;/html&gt; 
+```
+ 
+Verifica que la extensión del artchivo sea `.htm` y no `.txt`
+
+---
+
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+Haz &lt;kbd&gt;Click derecho&lt;/kbd&gt; → &lt;kbd&gt;Abrir con&lt;/kbd&gt; y selecciona un navegador con el que abrir el archivo. 
+
+Verás que se abre una página en blanco.
+
+Dentro de la etiqueta `&lt;head&gt;` vamos a pegar lo siguiente:
+
+
+```html
+&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
+  
+&lt;title&gt;Este es el título de la página&lt;/title&gt;
+```
+
+Volvemos al navegador y actualizamos la página y veremos los cambios en la pestaña del navegador. En Windows podemos pulsar &lt;kbd&gt;F5&lt;/kbd&gt; o &lt;kbd&gt;ctrl&lt;/kbd&gt; + &lt;kbd&gt;F5&lt;/kbd&gt; para recargar la página evitando que hayan quedado recursos en caché.
+
+---
+
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+Ahora, dentro de la etiqueta `&lt;body&gt;` vamos a crear una cabezera con un título principal
+
+
+```html
+&lt;header&gt;
+ &lt;h1&gt; Título principal &lt;/h1&gt; 
+&lt;/header&gt;
+```
+
+Si actualizamos veremos el título en la web:
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/titulo-web.PNG" /&gt;&lt;/div&gt;
+
+Nota: `&lt;h1&gt;` es equivalente a `#` en R Markdown, `&lt;h2&gt;` es equivalente a `##` en R Markdown, ...
+
+
+---
+
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+Podemos agregar más elementos dentro de `&lt;body&gt;`, como párrafos, listas, o incluso código.
+
+
+```html
+&lt;p&gt;Párrafo 1&lt;/p&gt;
+
+&lt;!-- Lista --&gt;
+&lt;ul&gt;
+ &lt;li&gt; Elemento 1 &lt;/li&gt;
+ &lt;li&gt; Elemento 2 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- Código --&gt;  
+&lt;pre&gt;
+&lt;code&gt;
+# Creamos un gráfico
+plot(mtcars$cyl, col = 3)
+&lt;/code&gt;
+&lt;/pre&gt;
+```
+
+
+`&lt;!-- Texto  --&gt;` es un comentario en HTML.
+
+---
+
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+También podemos **anidar etiquetas**. Por ejemplo, podemos agregar negrita a una parte del párrafo que creamos antes:
+
+
+```html
+&lt;p&gt; &lt;strong&gt;Párrafo&lt;/strong&gt; 1&lt;/p&gt;
+```
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/web-simple.PNG" /&gt;&lt;/div&gt;
+
+---
+
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+También vamos a agregar un par de imágenes. Dentro del directorio creamos una carpeta llamada `imagenes` y ponemos los archivos dentro de ella. Una vez hecho podemos agregarlos con la etiqueta `&lt;img&gt;`.
+
+
+```html
+&lt;img src = "imagenes/calendR-logo.png"&gt;&lt;/img&gt;
+&lt;img src = "imagenes/econocharts-logo.png"&gt;&lt;/img&gt;
+```
+
+
+Ten en cuenta que las imágenes se verán a tamaño real.
+
+---
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+## Atributos HTML
+
+A las etiquetas `HTML` se les pueden agregar una serie de atributos, tales como `id` o `class`, que veremos en la sección sobre [conceptos básicos de CSS](#conceptos-css).
+
+La etiqueta `&lt;img&gt;` tiene los atributos `width` y `height`, que permiten cambiar el alto y el ancho de las imágenes:
+
+
+```html
+&lt;img src = "imagenes/calendR-logo.png" width = 100px&gt;&lt;/img&gt;
+&lt;img src = "imagenes/econocharts-logo.png" width = 100px&gt;&lt;/img&gt;
+```
+
+---
+
+# Conceptos básicos de **HTML**: creando una página muy simple
+
+Por último, dentro de la carpeta donde tenemos nuestro archivo `web.html` vamos a crear otra carpeta llamada `blog` y dentro de ella vamos a crear otro archivo `.htm` llamado `blog1.htm`.
+
+Vamos a copiar el contenido de `web.htm` a nuestro nuevo archivo, pero vamos a cambiar el título para que podamos distinguirlos:
+
+
+```html
+ &lt;h1&gt; Título blog &lt;/h1&gt; 
+```
+
+
+Dentro de `web.htm` vamos a crear un enlace hacia esta nueva página:
+
+
+```html
+&lt;a href = "blog/blog1.htm"&gt; Enlace 1 &lt;/a&gt;
+```
+
+---
+name: conceptos-css
+# Conceptos básicos de **CSS**
+
+Ya tenemos nuestro código HTML, pero le falta un poco de estilo. Para ello existen las hojas de estilo CSS (Cascading Style Sheets).
+
+CSS es un lenguaje de diseño gráfico para ser utilizado junto con lenguajes de marcado. Permite cambiar márgenes, bordes, colores, fuentes, tamaños, ... e incluso crear animaciones.
+
+Cada estilo se cambia con una serie de palabras clave que definen ciertas propiedades. Por ejemplo:
+
+| Etiqueta| Descripción|
+|:-------:|:-----------:|
+|  color  |  Color del elemento  |
+|  background-color   |  Color de fondo del elemento |
+
+
+Hay varias formas de agregar estilos a las etiquetas: agregándolas como un atributo (*inline*) de la etiqueta o con clases.
+
+---
+
+# Conceptos básicos de **CSS**: el atributo **style**
+
+Volvamos a `web.htm`. Vamos a cambiar el color del título principal.
+
++ Para ello podemos cambiar:
+
+```html
+ &lt;h1&gt; Título principal &lt;/h1&gt; 
+```
+
++ por:
+
+```html
+ &lt;h1 style = "color: red;"&gt; Título principal &lt;/h1&gt; 
+```
+ 
+
++ Resultado:
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/estilos-inline.PNG" /&gt;&lt;/div&gt;
+
+
+---
+
+# Conceptos básicos de **CSS**: el atributo **style**
+
+También podemos agregar, por ejemplo, márgenes a las imágenes y un borde:
+
++ Sustituye
+
+```html
+&lt;img src = "imagenes/calendR-logo.png" width = 100px&gt;&lt;/img&gt;
+&lt;img src = "imagenes/econocharts-logo.png" width = 100px&gt;&lt;/img&gt;
+```
+
++ Por:
+
+```html
+&lt;img style = "margin: 20px; border: 2px solid black" src = "imagenes/calendR-logo.png" width = 100px&gt;&lt;/img&gt;
+&lt;img style = "margin: 20px; border: 2px solid black" src = "imagenes/econocharts-logo.png" width = 100px&gt;&lt;/img&gt;
+```
+
+
+---
+
+# Conceptos básicos de **CSS**: asignar un estilo a los elementos del mismo tipo
+
+Si queremos aplicar el mismo estilo a todos los párrafos de la web resultaría poco eficiente escribir siempre el estilo de manera _inline_ en todos párrafos de la web.
+
+Vamos a cambiar el estilo de todos los elementos de las listas. Para ello podemos escribir lo siguiente dentro de la etiqueta `&lt;head&gt;`:
+
+
+```html
+&lt;style&gt;
+ li {
+   font-size: 20px;   /*Tamaño de la fuente*/
+   color: blue;       /*Color*/
+   margin-top: 10px;  /*Margen superior*/
+ }
+&lt;/style&gt;
+```
+
+
+`/*Texto*/` es un comentario en CSS.
+
+
+---
+
+# Conceptos básicos de **CSS**: asignar un estilo a los elementos mediante **clases**
+
+Mediante el atributo `class` podemos asignar clases a los elementos HTML, de esta forma podemos crear un estilo por cada clase que se aplicará a los elementos que contengan esa clase. Ten en cuenta que se pueden asignar varias clases al mismo elemento.
+
+
+```html
+&lt;!-- Lista --&gt;
+&lt;ul&gt;
+ &lt;li class = "clase1"&gt; Elemento 1 &lt;/li&gt;
+ &lt;li&gt; Elemento 2 &lt;/li&gt;
+&lt;/ul&gt;
+```
+
+
+
+```html
+&lt;style&gt;
+ .clase1 {
+   font-size: 30px;         /*Tamaño de la fuente*/
+   color: red;              /*Color*/
+   background-color: gray;  /*Color de fondo*/
+ }
+&lt;/style&gt;
+```
+
+---
+
+# Conceptos básicos de **CSS**: asignar un estilo a los elementos mediante **id**
+
+También podemos usar el atributo `id`. La diferencia entre `id` y `class` es que los `id` tienen que ser únicos ya que su objetivo es identificar un elemento.
+
+
+```html
+&lt;!-- Lista --&gt;
+&lt;ul&gt;
+ &lt;li id = "id-1"&gt; Elemento 1 &lt;/li&gt;
+ &lt;li&gt; Elemento 2 &lt;/li&gt;
+&lt;/ul&gt;
+```
+
+
+
+```html
+&lt;style&gt;
+ #id-1 {
+   font-size: 30px;              /*Tamaño de la fuente*/
+   color: red;                   /*Color*/
+   background-color: lightgray;  /*Color de fondo*/
+ }
+&lt;/style&gt;
+```
+
+
+---
+# Conceptos básicos de **CSS**: ¡sepáralo del HTML!
+
+Lo ideal es separar el CSS en uno o varios archivos. Crea un archivo CSS en la raíz del directorio (de la misma manera y en el mismo lugar en donde creaste el `.htm`) y llámalo `estilos.css`.
+
+Dentro de este archivo pega los siguientes estilos que creamos antes, pero **sin la etiqueta `&lt;style&gt;`**:
+
+.pull-left[
+
+```html
+ li {
+   font-size: 20px;   /*Tamaño de la fuente*/
+   color: blue;       /*Color*/
+   margin-top: 10px;  /*Margen superior*/
+ }
+```
+]
+
+.pull-right[
+
+```html
+ .clase1 {
+   font-size: 30px;         /*Tamaño de la fuente*/
+   color: red;              /*Color*/
+   background-color: gray;  /*Color de fondo*/
+ }
+```
+]
+
+Ahora borra los estilos que agregamos en la etiqueta `&lt;head&gt;` de `web.htm` en la diapositiva anterior y sustitúyelo por lo siguiente:
+
+
+```html
+&lt;link rel = "stylesheet" href = "estilos.css"&gt;
+```
+
+
+---
+# Conceptos básicos de **CSS**: librerías
+
+## Twitter Bootstrap
+
+[Boostrap](https://getbootstrap.com/docs/4.3/getting-started/introduction/) es un _framework_ CSS que incorpora una gran cantidad de clases CSS predefinidas que **nos permiten crear páginas web _responsive_ sin tener que escribir las clases CSS**.
+
+Podemos agregarlo a nuestra web añadiendo lo siguiente dentro de `&lt;head&gt;`:
+
+
+```html
+&lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"&gt;
+```
+
+Las hojas de estilos van en la etiqueta `&lt;head&gt;`.
+
+
+---
+# Conceptos básicos de **CSS**: librerías
+
+## Twitter Bootstrap
+
+Vamos a agregar una barra de navegación hecha con Bootstrap del siguiente ejemplo:
+
+&gt; https://getbootstrap.com/docs/4.0/components/navbar/
+
+
+Pegamos el código dentro del `&lt;header&gt;`, guardamos y vemos los resultados.
+
+
+---
+# Conceptos básicos de **CSS**: aprende CSS viendo ejemplos con el inspector de elementos
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/inspeccionar.PNG" width = "600px" /&gt;&lt;/div&gt;
+
+
+
+---
+# Conceptos básicos de **CSS**: aprende CSS viendo ejemplos de otras webs
+
+Existen diferentes fuentes donde puedes encontrar ejemplos. Recomiendo las siguientes:
+
+.pull-left[
+## CodePen
+
+&gt; [https://codepen.io/](https://codepen.io/)
+]
+
+.pull-right[
+## Free Frontend
+
+&gt; [https://freefrontend.com/](https://freefrontend.com/)
+]
+
+
+---
+# Conceptos básicos de **CSS**: aprende CSS viendo ejemplos de otras webs
+
+Vamos a agregar otro ejemplo de Boostrap que podemos encontrar en la página Free Frontend.
+
+&gt; [https://freefrontend.com/bootstrap-footers/](https://freefrontend.com/bootstrap-footers/)
+
+En concreto:
+
+&gt; [https://bbbootstrap.com/snippets/simple-footer-social-media-icons-37929510](https://bbbootstrap.com/snippets/simple-footer-social-media-icons-37929510)
+
+
+---
+
+# Agregando **JavaScript**
+
+JavaScript es un lenguaje de programación web que permite crear aplicaciones web o realizar ciertas funciones dinámicas.
+
+Aunque no vamos a aprender JavaScript, **vamos a ver cómo agregar librerías de JavaScript a nuestra web**.
+
+
+Como ejemplo vamos a agregar la librería `prism.js`, que agrega colores de manera automática a los elementos de código de una web.
+
+En concreto, vamos a descargar los archivos necesarios para resaltar la sintaxis de códigos de R.
+
+
+&gt; [https://prismjs.com/download.html#themes=prism&amp;languages=r](https://prismjs.com/download.html#themes=prism&amp;languages=r)
+
+---
+
+# Agregando **JavaScript**: prism.js
+
+## En el &amp;lt;head&gt;
+
+```html
+&lt;link rel = "stylesheet" href = "prism.css"&gt;
+```
+
+
+## En el &amp;lt;footer&gt;
+
+```html
+&lt;script src = "prism.js"&gt;&lt;/script&gt;
+```
+
+
+## Agregamos la clase language-r al código
+
+```html
+&lt;pre class = "language-r"&gt;
+&lt;code class = "language-r"&gt;
+```
+
+---
+name: cap4
+class: inverse, hide-logo, middle, center
+
+# 4. HUGO: aprendiendo a personalizar y crear plantillas
+
+---
+
+# ¿Cómo funcionan las **plantillas**?
+
+Dentro del directorio principal encontrarás una carpeta llamada `theme`. Dentro de esta carpeta podemos encontrar una serie de archivos y carpetas. Los más relevantes son:
+
++ `assets`, donde se encuentran las hojas de estilos y los archivos JavaScript (si los hay).
++ `layouts`, donde se encuentran las plantillas HTML.
+
+Las plantillas dentro de `layouts` no son HTML puro, sino que mezclan HTML con HUGO. Las variables del archivo `config`, así como las variables del encabezado YAML de los Markdown y su contenido se pasan a estas plantillas para crear el HTML definitivo.
+
+
+El código HUGO utiliza llaves dobles: {{  }}
+
+---
+name: carpeta-theme
+# La carpeta **layouts**
+
+Dentro de la carpeta `layouts` se encuentran las plantillas en las que se basa cada web. Por ejemplo, en el tema `Hyde` tendremos:
+
+
+```r
+.
+*├── 📁 _default
+     ├── baseof.html
+     ├── list.html
+     ├── single.html
+├── 404.html
+├── 📁 about
+└── index.html
+*└── partials
+└── 📁 portfolio
+└── 📁 shortcodes
+```
+
+En todas las plantillas nos encontraremos una carpeta llamada `_default`, donde se definen las plantillas por defecto  y otra llamada `partials`, donde se crean plantillas parciales para usarse en otras plantillas HTML. A su vez, puedes crear carpetas (plantillas) para cada sección, **usando el mismo nombre** (cambia `portfolio` por `portafolio` y `about` por `acerca`). 
+ 
+---
+
+# Creando variables
+
+Dentro de la primera web que hicimos en el [Tema 2](#cap2) abre el artículo que creamos con R Markdown llamado `post-prueba.Rmd`.
+
+En el encabezado YAML del archivo vamos a agregar lo siguiente:
+
+
+```html
+texto: "Este es un texto"
+```
+
+
+Esta es una [variable del encabezado YAML](https://gohugo.io/content-management/front-matter/) y podremos utilizarla donde queramos. Para ello, vamos a la plantilla donde queramos hacer el cambio y escribimos:
+
+
+
+```html
+*{{.Params.texto}}
+```
+
+---
+
+# Creando variables
+
+Primero tenemos que encontrar qué archivo queremos modificar. Como queremos cambiar la plantilla de los artículos en primer lugar tenemos que ir a &lt;kbd&gt;layouts&lt;/kbd&gt; → &lt;kbd&gt;_default&lt;/kbd&gt; → &lt;kbd&gt;single.html&lt;/kbd&gt;.
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;
+{{ define "header" }}
+    {{ partial "page-single/variables-init.html" . }}
+    {{ partial "header.html" . }}              # &lt;-- Encabezado
+{{ end }}
+
+{{ define "content" }}
+    {{ partial "page-single/content.html" . }}  # &lt;-- Aquí se define el contenido
+{{ end }}
+
+{{ define "footer" }}                                      
+    {{ partial "page-single/footer.html" . }}   # &lt;-- Pie de página
+    {{ partial "page-single/variables-deinit.html" . }}        
+{{ end }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+
+
+En este caso: &lt;kbd&gt;partials&lt;/kbd&gt; → &lt;kbd&gt;page-single&lt;/kbd&gt; → &lt;kbd&gt;content.html&lt;/kbd&gt;.
+
+
+
+---
+
+# Creando variables
+
+Abrimos `content.html` y (por ejemplo) debajo de:
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt; {{ partial "page-single/post-meta.html" . }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+escribimos:
+
+
+```html
+&lt;p&gt;{{.Params.texto}}&lt;/p&gt;
+```
+
+Sin embargo, si la variable no se define en todos los artículos estaremos creando párrafos HTML vacíos. Para evitarlo podemos crear un condicional:
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;{{with .Params.texto}}&amp;lt;p&gt;{{.}}&amp;lt;/p&gt;{{ end }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+También podemos crear un else:
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;{{with .Params.texto}}&amp;lt;p&gt;{{.}}&amp;lt;/p&gt;{{else}}&amp;lt;p&gt;No hay texto&amp;lt;/p&gt;{{ end }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+
+
+---
+
+# Creando variables
+
+## Variables lógicas
+
+Dentro de los encabezados YAML también podemos crear variables booleanas o lógicas:
+
+
+```html
+variable: true
+```
+
+En este caso, si queremos que se muestre un párrafo cuando la variable toma el valor `true` podemos escribir:
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;{{if .Params.variable}}&amp;lt;p&gt;Texto si true&amp;lt;/p&gt;{{else}}&amp;lt;p&gt;Texto si false&amp;lt;/p&gt;{{ end }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+También podemos concatenar condiciones entre variables de tipo cadena y variables lógicas:
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;{{if .Params.variable}}{{with .Params.texto}}&amp;lt;p&gt;{{.}}&amp;lt;/p&gt;{{else}}&amp;lt;p&gt;No hay texto&amp;lt;/p&gt;{{ end }}{{ end }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+---
+
+# Creando variables
+
+## Variables globales
+
+También podemos establecer una variable global definida dentro de `config.yaml`. Vamos a agregar la siguiente línea al archivo dentro de `params`:
+
+
+
+```html
+info: "Esta es una información sobre mi"
+```
+
+
+Este texto lo pondremos debajo de nuestra imagen de perfil. Es una variable global porque afecta a todas las páginas de la web.
+
+
+---
+
+# Creando variables
+
+## Variables globales
+
+Vamos a &lt;kbd&gt;layouts&lt;/kbd&gt; → &lt;kbd&gt;partials&lt;/kbd&gt; → &lt;kbd&gt;sidebar.html&lt;/kbd&gt; y buscamos dónde queremos agregar el texto.
+
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;{{ with .Site.Params.info}} &amp;lt;p&gt;{{.}}&amp;lt;/p&gt; {{end}}&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/info.PNG" width = "200px" /&gt;&lt;/div&gt;
+
+
+---
+
+# Traducción de contenidos
+
+En el capítulo anterior ya vimos como podíamos traducir los contenidos. Pero si nuestra plantilla no tiene soporte para traducción tendremos que hacer unos pasos adicionales.
+
+En primer lugar vamos a `config.yaml` y ponemos lo siguiente:
+
+
+```r
+defaultContentLanguage: es
+languages:
+  es:
+    contentDir: content/es
+    languageName: Español
+    weight: 1
+  en:
+    contentDir: content/en
+    languageName: English
+    weight: 2
+```
+
+
+---
+
+# Traducción de contenidos
+
+Ahora podemos parar el servidor con `blogdown::stop_server()`, ir a la carpeta `content` y crear dos nuevas carpetas llamadas `es` y `en`. Podemos meter todo el contenido que ya teníamos en el idioma que queramos, por ejemplo en `es`.
+
+- Si volvemos a ejecutar el servidor y entramos en `/en` podremos ver los artículos en inglés.
+
+- Dentro de `en` podemos crear las mismas carpetas que dentro de `es`. Vamos a crear una llamada `articulos`.
+
+Ahora vamos a crear un artículo en inglés llamado `post-prueba.Rmd` dentro de &lt;kbd&gt;en&lt;/kbd&gt; → &lt;kbd&gt;articulos&lt;/kbd&gt; que será la traducción del artículo que creamos como ejemplo en el tema anterior correspondiente.
+
+
+Podemos repetir el proceso para todos los archivos y carpetas.
+
+---
+
+# Traducción de contenidos
+
+Ve ahora a `/en/articulos`:
+
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/trad-hyde.PNG" /&gt;&lt;/div&gt;
+
+
+**Problema**: el título de la sección es "Artículos" en lugar de "Posts". Para solucionarlo podemos crear un archivo llamado `_index.md` equivalente al que existe dentro de &lt;kbd&gt;es&lt;/kbd&gt; → &lt;kbd&gt;articulos&lt;/kbd&gt; y cambiar el título.
+
+
+
+---
+
+# Traducción de contenidos
+
+## ¿Cómo hacemos para referenciar las páginas en castellano con el inglés (y viceversa)?
+
+Si vamos a la página de inicio veremos que no hay ningún botón para traducir el contenido. En el artículo que tradujimos tampoco.
+
+El primer paso es referenciar las páginas entre si con mediante links _rel alternate_. Vamos a &lt;kbd&gt;layouts&lt;/kbd&gt; → &lt;kbd&gt;partials&lt;/kbd&gt; → &lt;kbd&gt;header&lt;/kbd&gt; → &lt;kbd&gt;meta.html&lt;/kbd&gt; y escribimos:
+
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;
+{{ if .IsTranslated }}
+  {{ range .AllTranslations }}
+&amp;lt;link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}"&gt;
+	 {{ end }}
+{{ end }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+
+---
+
+# Traducción de contenidos
+
+## ¿Cómo hacemos para referenciar las páginas en castellano con el inglés (y viceversa)?
+
+Si vemos el código fuente de los artículos traducidos veremos algo como lo siguiente:
+
+
+```html
+&lt;link rel="alternate" hreflang="es" href="//localhost:4321/articulos/post-prueba/"&gt;
+	  
+&lt;link rel="alternate" hreflang="en" href="//localhost:4321/en/articulos/post-prueba/"&gt;
+```
+
+
+Ahora las páginas están referenciadas entre si, de modo que una se considera la traducción de la otra, pero todavía necesitamos un botón para cambiar entre un idioma y otro.
+
+
+---
+
+# Traducción de contenidos
+
+## ¿Cómo hacemos para referenciar las páginas en castellano con el inglés (y viceversa)?
+
+Vamos a agregar un botón en la barra lateral para poder cambiar de idioma en caso de que la traducción esté disponible.
+
+Nos dirigimos a &lt;kbd&gt;layouts&lt;/kbd&gt; → &lt;kbd&gt;partials&lt;/kbd&gt; → &lt;kbd&gt;sidebar.html&lt;/kbd&gt; y agregamos lo siguiente antes del penúltimo `div`.
+
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;
+      {{ if .IsTranslated }}
+        &amp;lt;div style = "padding: 7px; margin-top:10px; border: 1px solid white; text-align:center"&gt;
+        	{{ range .Translations }}
+        		&amp;lt;a href="{{ .Permalink }}"&gt;{{ .Language.LanguageName }}&amp;lt;/a&gt;
+        	{{ end}}
+         &amp;lt;/div&gt;
+      {{ end }}
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+---
+
+# Traducción de contenidos
+
+## ¿Cómo hacemos para referenciar las páginas en castellano con el inglés (y viceversa)?
+
+&lt;div style="text-align:center; margin-top:-10px;"&gt;&lt;img src="images/traduccion-hyde.PNG" /&gt;&lt;/div&gt;
+
+
+---
+
+# Traducción de contenidos
+
+## ¿Y si queremos que los nombres de las carpetas y los documentos sean distintos?
+
+
+Cuando creamos la carpeta `en` dentro de ella creamos una carpeta llamada de la misma manera que en la carpeta `es`, donde a su vez creamos un artículo en inglés pero con el mismo nombre. Esto se debe a que HUGO identifica los archivos de ambos idiomas según los nombres de carpeta y de documento.
+
+
+Si cambiamos el nombre de la carpeta `articulos` dentro de `en` por `posts` veremos que la traducción de la barra lateral deja de estar disponible (se consideran páginas distintas no relacionadas).
+
+---
+
+# Traducción de contenidos
+
+## ¿Y si queremos que los nombres de las carpetas y los documentos sean distintos?
+
+Cambia el nombre de la carpeta `articulos` dentro de `en` por `posts`. Dentro del `_index.md` de las carpeta (`post` y `articulos`) agregamos la siguiente línea:
+
+
+```html
+translationKey: "articulos"
+```
+
+&gt; Esta línea relaciona mediante un identificador una serie de páginas. Podemos hacer lo mismo para los documentos R Markdown.
+
+---
+
+# Traducción de otros textos: el enlace a Inicio
+
+Si nos dirigimos a una página en inglés y hacemos click en el Título de la página (texto superior de la barra lateral) nos llevará a la página de inicio en español. Podemos hacer unos cambios para que ese enlace sea distinto dependiendo del idioma en el que estemos navegando.
+
+Vamos a &lt;kbd&gt;layouts&lt;/kbd&gt; → &lt;kbd&gt;partials&lt;/kbd&gt; → &lt;kbd&gt;sidebar.html&lt;/kbd&gt; e identificamos ese enlace:
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;&amp;lt;a href="{{ .Site.BaseURL }}"&gt;
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+Y lo sustituimos por:
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;&amp;lt;a href="{{ "" | absLangURL }}"&gt;
+&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+---
+
+# Traducción del menú
+
+Ya hemos aprendido a traducir los contenidos, pero todavía nos queda por traducir los textos de la barra lateral (el menú). Tenemos que ir al `config.yaml` y agregar el menú dentro de `en:` como se muestra (¡cuidado con la identación!):
+
+
+```html
+    menu:
+      main:
+        - identifier: posts
+          URL: /en/posts
+          name: Posts
+          weight: 100
+        - identifier: portafolio
+          name: Portafolio
+          url: /portafolio/
+          weight: 200
+        - identifier: acerca
+          name: Acerca
+          url: /acerca/
+          weight: 300
+```
+
+
+---
+
+# Traducción de textos: **i18n**
+
+En cada artículo aparece el tiempo estimado de lectura, pero el texto "mins read" siempre aparece en inglés porque forma parte del HTML. En este caso necesitamos utilizar el sistema de internacionalización i18n.
+
+
+- Creamos una carpeta llamada `i18n` dentro de la raiz del proyecto.
+
+- Dentro de la nueva carpeta creamos un archivo llamado `en.yaml` y otro llamado `es.yaml`.
+
+.pull-left[
+en.yaml
+
+
+```html
+- id: mins
+  translation: "min read"
+```
+
+ ]
+
+
+.pull-right[
+
+es.yaml
+
+
+```html
+- id: mins
+  translation: "minutos de lectura"
+```
+
+
+ ]
+
+---
+
+# Traducción de textos: **i18n**
+
+- Podemos ir a &lt;kbd&gt;partials&lt;/kbd&gt; → &lt;kbd&gt;page-single&lt;/kbd&gt; → &lt;kbd&gt;post-meta.html&lt;/kbd&gt;, que es donde se encuentra el texto que queremos traducir y sustituimos "min read" por:
+
+
+&lt;pre style="position: relative;"&gt;
+&lt;code class="html hljs xml remark-code"&gt;{{i18n "mins"}}&lt;/code&gt;
+&lt;button class="xaringanextra-clipboard-button" type="button" aria-label="Copy code to clipboard" style="color: rgb(51, 51, 51);"&gt;Copy Code&lt;/button&gt;&lt;/pre&gt;
+
+
+Ahora el texto estará traducido según el idioma. Esto es particularmente útil si no queremos agregar variables en el `config.yaml`, si tenemos textos largos o si queremos agregar textos con componentes de HTML anidados (e.g. textos con palabras en negrita).
+
+---
+name: cap5
+class: inverse, hide-logo, middle, center
+
+# 5. Publicación de la web
+
+
+---
+
+# Publicación
+
+* El directorio de publicación es por defecto `public`. 
+
+--
+
+* Si ejecutas `blogdown::build_site()` los archivos generados se escribirán en `public`.
+
+--
+
+* Puedes subir los contenidos de la carpeta `public` a cualquier servidor que pueda servir páginas web estáticas (como GitHub Pages). Un vez subidos la página funcionará con normalidad.
+
+--
+
+* También es posible utilizar un [servicio de despliegue continuo](https://gohugo.io/hosting-and-deployment/hosting-on-netlify/), como Netlify. Cuando se enlaza con un repositorio git, cada git actualizará el sitio.
+
+--
+
+* Si utilizas despliegue continuo, tendrás que agregar un archivo `.gitignore` y tendrás que añadir `public` a la lista de archivos para ignorar por parte de git.
+
+---
+
+# GitHub pages
+
+
++ Crea un nuevo repositorio.
++ Sube **el contenido** de la carpeta `public` al repositorio. Si la web es muy grande (más de 100 archivos) tendrás que utilizar [GitKraken](https://www.gitkraken.com/) o [GitHub Desktop](https://desktop.github.com/) y sincronizar tu cuenta.
++ Creamos una nueva rama llamada `gh-pages`.
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/gh-pages.PNG" /&gt;&lt;/div&gt;
+
+
+---
+
+# GitHub pages
+
+
++ Vamos a **Settings** y en la sección **GitHub Pages** elegimos la rama `gh-pages`.
+
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/gh-branch.PNG" width = "550px" /&gt;&lt;/div&gt;
+
+
+---
+# Netlify
+
+Netlify es una empresa de computación en la nube con sede en San Francisco que **ofrece servicios de alojamiento y backend** sin servidor para aplicaciones web y sitios web estáticos.
+
+De manera gratuita ofrece:
+
++ Subir una cantidad ilimitada de sitios.
++ Servicio de despliegue continuo.
++ 300 minutos al mes para compilar lo sitios.
++ 100 Gb al mes de bandwidth.
++ Redirecciones 301.
++ Previsualización al subir los archivos.
+
+
+**Inconveniente**: si superásemos los límites mensuales gratuitos (algo bastante complicado) los precios son muy elevados, por lo que sería recomendable migrar a un servicio de hosting normal.
+
+---
+
+
+
+# Netlify
+
+Para subir los archivos a Netlify necesitaremos que nuestra web incluya un archivo llamado `netlify.toml`. Si no está creado ejecuta:
+
+
+```r
+blogdown::config_netlify()
+```
+
+Si haces algún cambio en el archivo puedes comprobar que todo está correcto con:
+
+
+```r
+blogdown::check_netlify()
+```
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/yihui-deploy.png" width = "250px" /&gt;&lt;/div&gt;
+
+
+---
+
+# Netlify
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/netlify.PNG" width = "700px" /&gt;&lt;/div&gt;
+
+---
+
+# Netlify: **cambiando el nombre** por defecto
+
+Por defecto Netlify asigna un nombre aleatorio a nuestra nueva página, en mi caso el nombre es el siguiente:
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/netlify-name.PNG" /&gt;&lt;/div&gt;
+
+---
+
+# Netlify: **cambiando el nombre** por defecto
+
+Si hacemos click en **Site settings** nos aparecerá lo siguiente:
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/netlify-name-2.PNG" /&gt;&lt;/div&gt;
+
+
+Haciendo click en **Change site name** podremos elegir un nombre siempre y cuando ningún usuario lo haya elegido antes.
+
+---
+
+# Netlify: **cambiando el nombre** por defecto
+
+Si tenemos algún nombre de dominio propio (de pago, de nuestra organización, ...) también podemos utilizarlo en lugar del `.netlify.com`.
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/custom-domain.PNG" /&gt;&lt;/div&gt;
+
+Ten en cuenta que si no registras el dominio con Netlify deberás agregar registros DNS en tu proveedor para apuntar a el dominio o subdominio del sitio en Netlify.
+
+---
+
+# Subdominios rbind
+
+Rbind regala dominios `.rbind.io`. Para solicitar uno tendrás que crear un Issue en su [repositorio de GitHub](https://github.com/rbind/support) y escribirles algo como lo siguiente:
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img width = 500px src="images/rbind-request.png" /&gt;&lt;/div&gt;
+
+---
+
+# Actualizar el dominio
+
+Si vas a utilizar un dominio personalizado dentro de `config.toml` o `config.yaml` tendrás que cambiar el `baseURL`:
+
+```toml
+baseURL = "https://midominio.rbind.io/"
+```
+
+En [Netlify](https://www.netlify.com) tendrás que especificar el nuevo dominio como se indicó antes.
+
+---
+
+# Netlify: **actualizar** la web
+
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img src="images/update-site.PNG" /&gt;&lt;/div&gt;
+
+---
+
+# Netlify: **actualizar** la web
+
+&lt;div style="text-align:center; margin-top:10px;"&gt;&lt;img width = 650px src="images/update-site-2.PNG" /&gt;&lt;/div&gt;
+
+
+---
+
+# Otras **alternativas** de alojamiento
+
+## GitLab Pages
+
+GitLab es un servicio de control de versiones similar a GitHub. También ofrecen un servicio para alojar páginas web estáticas, con más recursos que GitHub Pages. El proceso para subir una página es similar en ambos casos.
+
+Documentación: https://docs.gitlab.com/ee/user/project/pages/
+
+## CloudFlare Pages
+
+Lanzado recientemente (abril de 2021), ofrece de manera gratuita más servicios y recursos que Netlify, pero publicar y actualizar la web no es tan trivial como con Netlify, ya que debemos tener alojado el sitio en GitHub.
+
+Documentación: https://developers.cloudflare.com/pages/
+
+
+---
+
+# Siguientes pasos
+
+Si quieres que tu página aparezca en los resultados de Google regístrala en la [Google Search Console](https://search.google.com/search-console/about). Esto nos permitirá:
+
++ Ver **qué páginas están en Google y cuáles no** (y cómo solucionar posibles problemas).
++ Estadísticas sobre el **número de clicks** que recibes, el número de veces que tus páginas aparecen en los resultados de Google, el porcentaje de clicks y la posición media.
++ **Métricas** sobre velocidad de carga de las páginas, usabilidad móvil y experiencia de la página.
++ **Estadísticas de rastreo**, posibles mejoras y páginas que enlazan a la nuestra.
+
+
+---
+
+# Siguientes pasos
+
+Podemos comprobar la velocidad de carga de nuestras páginas con [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/), tanto en móvil como en ordenador, y las posibles acciones a tomar.
+
+
+También podemos probar [web.dev](https://web.dev/measure/), para **medir la velocidad, encontrar malas prácticas, mejorar la accesibilidad y evaluar el SEO**.
+
+
+
+Por último, si queremos mejorar la velocidad de nuestro sitio web y reducir el ancho de banda consumido podemos usar un CDN (Content Delivery Network), como el que porporciona CloudFlare de manera gratuita (aunque Netlify también proporciona uno). 
+
+
+---
+
+class: inverse, hide-logo, middle, center
+
+# ¡Gracias!
+
+
+
+
+&lt;style&gt;
+
+.margin-top{
+margin-top: 125px;
+}
+
+h1 {
+color: black;
+}
+
+kbd {
+    display: inline-block;
+    padding: 8px 5px;
+    font: 17px SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+        line-height: normal;
+    line-height: normal;
+    line-height: 8px;
+    color: #444d56;
+    background-color: #fafbfc;
+    border-bottom-color: #d1d5da;
+    border: 1px solid #d1d5da;
+    border-radius: 6px;
+    box-shadow: inset 0 -1px 0 #d1d5da;
+}
+
+.hljs-github .hljs{
+border-radius: 5px;
+}
+&lt;/style&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<style>
+.logo {
+  background-image: url("https://www.flytech.es/wp-content/uploads/2019/02/Logotipo_negro_UNIVERSIDADE_DE_VIGO.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 110px;
+  height: 128px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

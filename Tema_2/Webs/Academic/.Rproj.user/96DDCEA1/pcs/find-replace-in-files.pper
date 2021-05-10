@@ -1,12 +1,12 @@
 {
     "dialog-state": {
-        "query": "avatar-2",
+        "query": "tipo núcleo",
         "path": "",
         "regex": false,
         "caseSensitive": false,
         "filePatterns": [],
         "excludeFilePatterns": [],
-        "resultsCount": 0,
+        "resultsCount": 2,
         "errorCount": 0,
         "replaceErrors": "",
         "projectRelative": true
